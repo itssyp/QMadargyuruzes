@@ -83,7 +83,6 @@ void MainWindow::filterList(const QString &text) {
         }
     }
 
-    // Update the model with the filtered list
     QStringListModel *model = new QStringListModel(this);
     model->setStringList(filteredList);
     ui->listView->setModel(model);
@@ -101,13 +100,11 @@ void MainWindow::updateTop3List() {
         birdCounts.push_back(std::make_pair(it.key(), it.value()));
     }
 
-    // Sort the vector by the ring count (second element of the pair)
     std::sort(birdCounts.begin(), birdCounts.end(),
               [](const std::pair<QString, int>& a, const std::pair<QString, int>& b) {
-                  return a.second > b.second;  // Sort in descending order by count
+                  return a.second > b.second;
               });
 
-    // Get the top 3 birds
     QStringList top3List;
     int count = 0;
     for (const auto& pair : birdCounts) {
@@ -119,7 +116,6 @@ void MainWindow::updateTop3List() {
         }
     }
 
-    // Update the model for the QListView
     QStringListModel *model = new QStringListModel(this);
     model->setStringList(top3List);
     ui->listView_recommendation->setModel(model);
@@ -139,7 +135,6 @@ void MainWindow::on_pushButton_clicked()
     }
 
     if (!indexes.isEmpty()) {
-        // Get the selected Hungarian name from the QModelIndex
         QString selectedHungarianName = indexes.first().data().toString();
         if (rec) selectedHungarianName = selectedHungarianName.left(selectedHungarianName.length()-4);
         QString hungarianName;
@@ -148,12 +143,10 @@ void MainWindow::on_pushButton_clicked()
         for (Birds entry : loadedBirds) {
 
             if (entry.getHungarianName() == selectedHungarianName) {
-                // Access all three names: Hungarian name, HURING code, and scientific name
                 hungarianName = entry.getHungarianName();
                 huringCode = entry.getHURING();
                 scientificName = entry.getScientificName();
 
-                // For example, display them using qDebug or set them in some QLabel
                 qDebug() << "Hungarian Name:" << hungarianName;
                 qDebug() << "HURING Code:" << huringCode;
                 qDebug() << "Scientific Name:" << scientificName;
@@ -192,23 +185,20 @@ void MainWindow::on_pushButton_clicked()
 void MainWindow::filterRingedList(const QString &text) {
     QStringList filteredList;
 
-    // Iterate through the bird map and check if the search text matches any of the attributes
     for (Birds &entry : ringedBirds) {
         QString hungarianName = entry.getHungarianName();
         QString huringCode = entry.getHURING();
         QString scientificName = entry.getScientificName();
         QString ringNumber = entry.getRingNumber();
 
-        // Check if the search text matches Hungarian name, HURING code, or scientific name
         if (hungarianName.contains(text, Qt::CaseInsensitive) ||
             huringCode.contains(text, Qt::CaseInsensitive) ||
             scientificName.contains(text, Qt::CaseInsensitive) ||
             ringNumber.contains(text, Qt::CaseInsensitive)) {
-            filteredList << ringNumber;  // Add the Hungarian name to the filtered list
+            filteredList << ringNumber;
         }
     }
 
-    // Update the model with the filtered list
     QStringListModel *model = new QStringListModel(this);
     model->setStringList(filteredList);
     ui->listView_2->setModel(model);
@@ -272,9 +262,8 @@ void MainWindow::on_loadButton_clicked()
 
 void MainWindow::on_listView_2_clicked(const QModelIndex &index)
 {
-    if (!index.isValid()) return; // Check if the index is valid
+    if (!index.isValid()) return;
 
-    // Get the selected Hungarian name from the QListView
     QString ringNumber = index.data().toString();
     Birds bird = ringedBirds[ringNumber];
     ui->hunLabel->setText(bird.getHungarianName());
@@ -283,7 +272,7 @@ void MainWindow::on_listView_2_clicked(const QModelIndex &index)
     ui->catchtypeLabel->setText(bird.getCatchType());
     ui->ageLabel->setText(bird.getAge());
     ui->genderLabel->setText(bird.getGender());
-    ui->dateLabel->setText(bird.getCatchDate().toString("yyyy.MM.dd")); // Format as needed
+    ui->dateLabel->setText(bird.getCatchDate().toString("yyyy.MM.dd"));
 }
 
 
