@@ -20,7 +20,7 @@
       <x>30</x>
       <y>50</y>
       <width>181</width>
-      <height>491</height>
+      <height>341</height>
      </rect>
     </property>
     <property name="editTriggers">
@@ -86,7 +86,7 @@
      <string>Betöltés</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>220</x>
@@ -96,7 +96,7 @@
      </rect>
     </property>
     <layout class="QVBoxLayout" name="verticalLayout">
-     <item alignment="">
+     <item>
       <widget class="QLabel" name="label">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Dátum&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -106,7 +106,7 @@
      <item>
       <widget class="QLineEdit" name="catchDateLine"/>
      </item>
-     <item alignment="">
+     <item>
       <widget class="QLabel" name="label_2">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Fogástípus&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -116,7 +116,7 @@
      <item>
       <widget class="QLineEdit" name="catchTypeLine"/>
      </item>
-     <item alignment="">
+     <item>
       <widget class="QLabel" name="label_3">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Gyűrűszám&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -126,7 +126,7 @@
      <item>
       <widget class="QLineEdit" name="ringNumberLine"/>
      </item>
-     <item alignment="">
+     <item>
       <widget class="QLabel" name="label_4">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Kor&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -136,7 +136,7 @@
      <item>
       <widget class="QLineEdit" name="ageLine"/>
      </item>
-     <item alignment="">
+     <item>
       <widget class="QLabel" name="label_5">
        <property name="text">
         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:14pt;&quot;&gt;Ivar&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
@@ -155,13 +155,13 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>780</x>
       <y>60</y>
       <width>191</width>
-      <height>171</height>
+      <height>184</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -265,6 +265,32 @@
      </item>
     </layout>
    </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>100</x>
+      <y>400</y>
+      <width>71</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Ajánlás</string>
+    </property>
+   </widget>
+   <widget class="QListView" name="listView_recommendation">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>420</y>
+      <width>181</width>
+      <height>121</height>
+     </rect>
+    </property>
+    <property name="editTriggers">
+     <set>QAbstractItemView::EditTrigger::NoEditTriggers</set>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -272,7 +298,7 @@
      <x>0</x>
      <y>0</y>
      <width>986</width>
-     <height>21</height>
+     <height>25</height>
     </rect>
    </property>
   </widget>

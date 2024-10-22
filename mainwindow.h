@@ -35,9 +35,17 @@ private slots:
 
     void on_listView_2_clicked(const QModelIndex &index);
 
+    void updateTop3List();
+
+    void on_listView_clicked(const QModelIndex &index);
+
+    void on_listView_recommendation_clicked(const QModelIndex &index);
+
 private:
     Ui::MainWindow *ui;
     QMap<QString,Birds> loadedBirds;
     QMap<QString,Birds> ringedBirds;
+    QMap<QString,int> sessionBirds;
+
 };
 #endif // MAINWINDOW_H

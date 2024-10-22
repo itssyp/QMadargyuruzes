@@ -43,19 +43,18 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     QStringListModel *model = new QStringListModel(this);
 
-    // Step 2: Load bird data into the map
-    loadBirds();
 
-    // Step 3: Extract bird species names from the map and store in a QStringList
+    loadBirds();
+    sessionBirds.clear();
+
+
     QStringList birdHURINGs;
     for (Birds entry : loadedBirds) {
         birdHURINGs << entry.getHungarianName();
     }
 
-    // Step 4: Populate the model with the bird species names
     model->setStringList(birdHURINGs);
 
-    // Step 5: Set the model to the QListView
     ui->listView->setModel(model);
 }
 
@@ -72,17 +71,15 @@ void MainWindow::on_searchButton_clicked()
 void MainWindow::filterList(const QString &text) {
     QStringList filteredList;
 
-    // Iterate through the bird map and check if the search text matches any of the attributes
     for (Birds &entry : loadedBirds) {
         QString hungarianName = entry.getHungarianName();
         QString huringCode = entry.getHURING();
         QString scientificName = entry.getScientificName();
 
-        // Check if the search text matches Hungarian name, HURING code, or scientific name
         if (hungarianName.contains(text, Qt::CaseInsensitive) ||
             huringCode.contains(text, Qt::CaseInsensitive) ||
             scientificName.contains(text, Qt::CaseInsensitive)) {
-            filteredList << hungarianName;  // Add the Hungarian name to the filtered list
+            filteredList << hungarianName;
         }
     }
 
@@ -97,14 +94,54 @@ void MainWindow::on_lineEdit_textChanged(const QString &arg1)
     filterList(ui->lineEdit->text());
 }
 
+void MainWindow::updateTop3List() {
+    std::vector<std::pair<QString, int>> birdCounts;
+
+    for (auto it = sessionBirds.begin(); it != sessionBirds.end(); ++it) {
+        birdCounts.push_back(std::make_pair(it.key(), it.value()));
+    }
+
+    // Sort the vector by the ring count (second element of the pair)
+    std::sort(birdCounts.begin(), birdCounts.end(),
+              [](const std::pair<QString, int>& a, const std::pair<QString, int>& b) {
+                  return a.second > b.second;  // Sort in descending order by count
+              });
+
+    // Get the top 3 birds
+    QStringList top3List;
+    int count = 0;
+    for (const auto& pair : birdCounts) {
+        if (count < 3) {
+            top3List << pair.first + " (" + QString::number(pair.second) + ")";
+            count++;
+        } else {
+            break;
+        }
+    }
+
+    // Update the model for the QListView
+    QStringListModel *model = new QStringListModel(this);
+    model->setStringList(top3List);
+    ui->listView_recommendation->setModel(model);
+}
+
+
 
 void MainWindow::on_pushButton_clicked()
 {
-    QModelIndexList indexes = ui->listView->selectionModel()->selectedIndexes();
+    bool rec = false;
+    QModelIndexList indexes;
+    if ( ui->listView->selectionModel()->hasSelection()){
+        indexes = ui->listView->selectionModel()->selectedIndexes();
+    } else {
+        indexes = ui->listView_recommendation->selectionModel()->selectedIndexes();
+        rec = true;
+    }
 
     if (!indexes.isEmpty()) {
         // Get the selected Hungarian name from the QModelIndex
         QString selectedHungarianName = indexes.first().data().toString();
+        if (rec) selectedHungarianName = selectedHungarianName.left(selectedHungarianName.length()-4);
         QString hungarianName;
         QString huringCode;
         QString scientificName;
@@ -138,6 +175,8 @@ void MainWindow::on_pushButton_clicked()
 
 
         ringedBirds[bird.getRingNumber()] = bird;
+        sessionBirds[bird.getHungarianName()]++;
+        updateTop3List();
 
         QStringList birdList;
         for (Birds entry : ringedBirds){
@@ -245,5 +284,17 @@ void MainWindow::on_listView_2_clicked(const QModelIndex &index)
     ui->ageLabel->setText(bird.getAge());
     ui->genderLabel->setText(bird.getGender());
     ui->dateLabel->setText(bird.getCatchDate().toString("yyyy.MM.dd")); // Format as needed
+}
+
+
+void MainWindow::on_listView_clicked(const QModelIndex &index)
+{
+    ui->listView_recommendation->clearSelection();
+}
+
+
+void MainWindow::on_listView_recommendation_clicked(const QModelIndex &index)
+{
+    ui->listView->clearSelection();
 }
 
